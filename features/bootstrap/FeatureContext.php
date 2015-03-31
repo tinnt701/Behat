@@ -147,8 +147,14 @@ class FeatureContext implements Context
             $this->process->setEnv($env);
         }
 
-        $this->process->start();
-        $this->process->wait();
+        $probe = BlackfireProbe::getMainInstance();
+        $probe->disable();
+        try {
+            $this->process->start();
+            $this->process->wait();
+        } finally {
+            $probe->enable();
+        }
     }
 
     /**
