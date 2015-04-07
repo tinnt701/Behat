@@ -147,13 +147,17 @@ class FeatureContext implements Context
             $this->process->setEnv($env);
         }
 
+        fwrite(STDERR, "Getting the probe\n");
         $probe = BlackfireProbe::getMainInstance();
+        fwrite(STDERR, "Disabling the probe\n");
         $probe->disable();
         try {
             $this->process->start();
             $this->process->wait();
         } finally {
+            fwrite(STDERR, "Reenabling the probe\n");
             $probe->enable();
+            fwrite(STDERR, "Done reenabling the probe\n");
         }
     }
 
